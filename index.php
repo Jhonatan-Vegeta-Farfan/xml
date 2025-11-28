@@ -1,9 +1,9 @@
 <programas_estudio>
-    <disenio_programacion_web>
-        <nombre>Diseño y Programación Web </nombre>
+    <diseno_programacion_web>
+        <nombre>DISEÑO Y PROGRAMACIÓN WEB</nombre>
         <modulos>
             <modulo1>
-                <nombre>ANÁLISIS Y DISEÑO DE SISTEMAS</nombre>
+                <nombre>ANÁLISIS Y DISEÑO DE SISTEMAS WEB</nombre>
                 <periodos>
                     <p1>
                         <nombre>I</nombre>
@@ -12,7 +12,7 @@
                                 <nombre>ANÁLISIS Y DISEÑO DE SISTEMAS</nombre>
                             </ud1>
                             <ud2>
-                                <nombre>FUNDAMETOS DE PROGRAMACIÓN</nombre>
+                                <nombre>FUNDAMENTOS DE PROGRAMACIÓN</nombre>
                             </ud2>
                             <ud3>
                                 <nombre>REDES E INTERNET</nombre>
@@ -21,21 +21,21 @@
                                 <nombre>INTRODUCCIÓN DE BASE DE DATOS</nombre>
                             </ud4>
                             <ud5>
-                                <nombre>ARQUITECTURA DE COMPUTADORAS</nombre>
+                                <nombre>INTRODUCCIÓN DE BASE DE DATOS</nombre>
+                            </ud5>
+                            <ud6>
+                                <nombre>COMUNICACIÓN ORAL</nombre>
                             </ud6>
                             <ud7>
-                                <nombre>COMUNICACIÓN ORAL</nombre>
-                            </ud7>
-                            <ud8>
                                 <nombre>APLICACIONES EN INTERNET</nombre>
-                            </ud8>
+                            </ud7>
                         </unidades_didacticas>
                     </p1>
                     <p2>
                         <nombre>II</nombre>
                         <unidades_didacticas>
                             <ud1>
-                                <nombre>OFIMATICA</nombre>
+                                <nombre>OFIMÁTICA</nombre>
                             </ud1>
                             <ud2>
                                 <nombre>INTERPRETACIÓN Y PRODUCCIÓN DE TEXTOS</nombre>
@@ -47,11 +47,14 @@
                                 <nombre>PROGRAMACIÓN ORIENTADA A OBJETOS</nombre>
                             </ud4>
                             <ud5>
-                                <nombre>APLICACIONES SISTEMATIZADAS</nombre>
+                                <nombre>ARQUITECTURA DE SERVIDORES WEB</nombre>
                             </ud5>
                             <ud6>
-                                <nombre>TALLER DE BASE DE DATOS</nombre>
+                                <nombre>APLICACIONES SISTEMATIZADAS</nombre>
                             </ud6>
+                            <ud7>
+                                <nombre>TALLER DE BASE DE DATOS</nombre>
+                            </ud7>
                         </unidades_didacticas>
                     </p2>
                 </periodos>
@@ -98,9 +101,10 @@
                                 <nombre>COMPRENSIÓN Y REDACCIÓN EN INGLÉS</nombre>
                             </ud5>
                             <ud6>
-                                <nombre>COMPORTAMIENTO ETICO</nombre>
+                                <nombre>COMNPORTAMIENTO ÉTICO</nombre>
                             </ud6>
                         </unidades_didacticas>
+                    </p4>
                 </periodos>
             </modulo2>
             <modulo3>
@@ -110,7 +114,7 @@
                         <nombre>V</nombre>
                         <unidades_didacticas>
                             <ud1>
-                                <nombre>PROGRAMACIÓN DE APLICACIONES MOVILES</nombre>
+                                <nombre>PROGRAMACIÓN DE APLICACIONES MÓVILES</nombre>
                             </ud1>
                             <ud2>
                                 <nombre>MARKETING DIGITAL</nombre>
@@ -122,13 +126,13 @@
                                 <nombre>GESTIÓN Y ADMINISTRACIÓN DE SITIOS WEB</nombre>
                             </ud4>
                             <ud5>
-                                <nombre>DIAGRAMAÉTICA DIGITAL</nombre>
+                                <nombre>DIAGRAMACIÓN DIGITAL</nombre>
                             </ud5>
                             <ud6>
-                                <nombre>SOLUCION DE PROBLEMAS</nombre>
+                                <nombre>SOLUCIÓN DE PROBLEMAS</nombre>
                             </ud6>
                             <ud7>
-                                <nombre>OPORTUNIDADES DE NEGOCIOS</nombre>
+                                <nombre>OPORTUNIDADES DE NEGOCIO</nombre>
                             </ud7>
                         </unidades_didacticas>
                     </p5>
@@ -139,7 +143,7 @@
                                 <nombre>PLATAFORMA DE SERVICIOS WEB</nombre>
                             </ud1>
                             <ud2>
-                                <nombre>ILUSTRACIÓN Y GRÁFICA DIGITAL</nombre>
+                                <nombre>ILUSTRACIÓN GRÁFICA Y DIGITAL</nombre>
                             </ud2>
                             <ud3>
                                 <nombre>ADMINISTRACIÓN DE SERVIDORES WEB</nombre>
@@ -155,20 +159,17 @@
                 </periodos>
             </modulo3>
         </modulos>
-    </disenio_programacion_web>
+    </diseno_programacion_web>
     <enfermeria_tecnica>
-        
-    </disenio_programacion_web>
-    <disenio_programacion_web>
-        
+
     </enfermeria_tecnica>
     <industrias_alimentos_bebidas>
-        
+
     </industrias_alimentos_bebidas>
     <mecatronica_automotriz>
-        
+
     </mecatronica_automotriz>
     <produccion_agropecuaria>
-        
+
     </produccion_agropecuaria>
 </programas_estudio>
