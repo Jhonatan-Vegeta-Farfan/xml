@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ies>
   <nombre>IES Pub HUANTA</nombre>
-  <programas_de_estudios>
+  <programas_estudios>
     <pe1>
       <nombre>DISEÑO Y PROGRAMACIÓN WEB</nombre>
       <mod1>
@@ -167,5 +167,5 @@
     <pe5>
       <nombre>PRODUCCIÓN AGROPECUARIA</nombre>
     </pe5>
-  </programas_de_estudios>
+  </programas_estudios>
 </ies>

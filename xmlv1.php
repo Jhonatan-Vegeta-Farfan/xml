@@ -116,7 +116,7 @@ $pe5['nombre'] = 'PRODUCCIÓN AGROPECUARIA';
 $pe5['modulos'] = [];
 
 $ies['nombre'] = 'IES Pub HUANTA';
-$ies['programas_de_estudios'] = [$pe1, $pe2, $pe3, $pe4, $pe5];
+$ies['programas_estudios'] = [$pe1, $pe2, $pe3, $pe4, $pe5];
 
 $xml = new DOMDocument('1.0', 'UTF-8');
 $xml->formatOutput = true;
@@ -126,11 +126,11 @@ $xml->appendChild($et1);
 
 
 $nombre_ies = $xml->createElement('nombre', $ies['nombre']);
-$programas_ies = $xml->createElement('programas_de_estudios');
+$programas_ies = $xml->createElement('programas_estudios');
 $et1->appendChild($nombre_ies);
 $et1->appendChild($programas_ies);
 
-foreach ($ies['programas_de_estudios'] as $indice => $PEs) {
+foreach ($ies['programas_estudios'] as $indice => $PEs) {
     $num_pe = $xml->createElement("pe".($indice+1));
     $nombre_pe = $xml->createElement('nombre', $PEs['nombre']);
     $num_pe->appendChild($nombre_pe);
