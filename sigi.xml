@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<instituto>
+<IESP_HUANTA>
   <programas_estudios>
     <programa>
       <id>1</id>
@@ -5956,4 +5956,4 @@
       </horas>
     </unidad>
   </unidades_didacticas>
-</instituto>
+</IESP_HUANTA>
