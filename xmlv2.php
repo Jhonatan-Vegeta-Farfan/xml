@@ -1,110 +1,137 @@
 <?php
 // Conexión a la base de datos MySQL usando PDO (PHP Data Objects)
-// Se establece conexión con el servidor localhost, base de datos 'sigi_huanta'
-// Se especifica codificación UTF-8 y se usan credenciales root/root
-$pdo = new PDO(
-    "mysql:host=localhost;dbname=sigi_huanta;charset=utf8", 
-    "root", 
-    "root");
+$conexion = new mysqli("localhost", "root", "root", "sigi_huanta");
+if ($conexion->connect_error) {
+    echo "Error de conexión a MySQL: (" . $conexion->connect_error . ")" . $conexion->connect_error;
+}
+$xml = new DOMDocument('1.0', 'UTF-8');
+$xml->formatOutput = true;
 
-// Crear un nuevo documento XML con versión 1.0 y codificación UTF-8
-// DOMDocument es una clase de PHP para manipular documentos XML
-$dom = new DOMDocument('1.0', 'UTF-8');
-// Activar formato de salida con sangrías y saltos de línea para mejor legibilidad
-$dom->formatOutput = true;
-// Crear el elemento raíz del XML llamado 'instituto'
-$instituto = $dom->createElement('IESP_HUANTA');
-// Añadir el elemento raíz como hijo del documento XML
-$dom->appendChild($instituto);
+$et1 = $xml->createElement('programas_estudio');
+$xml->appendChild($et1);
 
-// Mapear tablas de la base de datos a elementos XML
-// Cada tabla tiene: nombre de elemento principal, consulta SQL y nombre de elementos hijos
-$tablas = [
-    'programas_estudios' => ['elemento' => 'programa', 'sql' => "SELECT id, codigo, nombre FROM sigi_programa_estudios"],
-    'planes_estudio' => ['elemento' => 'plan', 'sql' => "SELECT id, id_programa_estudios, nombre, resolucion, fecha_registro FROM sigi_planes_estudio"],
-    'modulos_formativos' => ['elemento' => 'modulo', 'sql' => "SELECT id, descripcion, nro_modulo, id_plan_estudio FROM sigi_modulo_formativo"],
-    'semestres' => ['elemento' => 'semestre', 'sql' => "SELECT id, descripcion, id_modulo_formativo FROM sigi_semestre"]
-];
-
-// Recorrer cada tabla definida en el arreglo $tablas
-foreach ($tablas as $seccion => $config) {
-    // Crear un elemento XML con el nombre de la sección (ej: 'programas_estudios')
-    $elementoSeccion = $dom->createElement($seccion);
-    // Añadir esta sección como hijo del elemento raíz 'instituto'
-    $instituto->appendChild($elementoSeccion);
-    
-    // Ejecutar la consulta SQL definida para esta tabla
-    $stmt = $pdo->query($config['sql']);
-    // Recorrer cada fila de resultados de la consulta
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Crear un elemento hijo con el nombre especificado (ej: 'programa')
-        $item = $dom->createElement($config['elemento']);
-        // Añadir este elemento como hijo de la sección
-        $elementoSeccion->appendChild($item);
+$consulta = "SELECT * FROM sigi_programa_estudios";
+$resultado = $conexion->query($consulta);
+while ($pe = mysqli_fetch_assoc($resultado)) {
+    echo $pe['nombre'] . "<br>";
+    $num_pe = $xml->createElement('pe_'.$pe['id']);
+    $codigo_pe = $xml->createElement('codigo', $pe['codigo']);
+    $num_pe->appendChild($codigo_pe);
+    $tipo_pe = $xml->createElement('tipo', $pe['tipo']);
+    $num_pe->appendChild($tipo_pe);
+    $nombre_pe = $xml->createElement('nombre', $pe['nombre']);
+    $num_pe->appendChild($nombre_pe);
+    $et_plan = $xml->createElement('planes_estudio');
+    $consulta_plan = "SELECT * FROM sigi_planes_estudio WHERE id_programa_estudios=".$pe['id'];
+    $resultado_plan = $conexion->query($consulta_plan);
+    while ($resultado_pla = mysqli_fetch_assoc($resultado_plan)) {
+        $plan = $xml->createElement('plan_'.$resultado_pla['id']);
+        $nombre_plan = $xml->createElement('nombre', $resultado_pla['nombre']);
+        $plan->appendChild($nombre_plan);
+        $resolucion_plan = $xml->createElement('resolucion', $resultado_pla['resolucion']);
+        $plan->appendChild($resolucion_plan);
+        $fecha_registro_plan = $xml->createElement('fecha_registro', $resultado_pla['fecha_registro']);
+        $plan->appendChild($fecha_registro_plan);
         
-        // Recorrer cada columna de la fila actual
-        foreach ($row as $key => $value) {
-            // Validar que el nombre de la columna sea válido para XML
-            // Reemplazar caracteres no alfanuméricos con guión bajo
-            $elementName = preg_replace('/[^a-zA-Z0-9_]/', '_', $key);
-            // Si el nombre no comienza con letra o guión bajo, agregar prefijo 'field_'
-            if (!preg_match('/^[a-zA-Z_]/', $elementName)) {
-                $elementName = 'field_' . $elementName;
+        // ---------------------------Obtener módulos formativos para este plan---------------------------
+        $consulta_modulo = "SELECT * FROM sigi_modulo_formativo WHERE id_plan_estudio=".$resultado_pla['id'];
+        $resultado_modulo = $conexion->query($consulta_modulo);
+        $et_modulos = $xml->createElement('modulos_formativos');
+        
+        while ($modulo = mysqli_fetch_assoc($resultado_modulo)) {
+            $modulo_element = $xml->createElement('modulo_'.$modulo['id']);
+            $descripcion_modulo = $xml->createElement('descripcion', $modulo['descripcion']);
+            $modulo_element->appendChild($descripcion_modulo);
+            $nro_modulo = $xml->createElement('nro_modulo', $modulo['nro_modulo']);
+            $modulo_element->appendChild($nro_modulo);
+            
+            // ---------------------------Obtener periodos para este módulo---------------------------
+            $consulta_periodo = "SELECT * FROM sigi_semestre WHERE id_modulo_formativo=".$modulo['id'];
+            $resultado_periodo = $conexion->query($consulta_periodo);
+            $et_periodos = $xml->createElement('periodos');
+            
+            while ($periodo = mysqli_fetch_assoc($resultado_periodo)) {
+                $periodo_element = $xml->createElement('periodo_'.$periodo['id']);
+                $descripcion_periodo = $xml->createElement('descripcion', $periodo['descripcion']);
+                $periodo_element->appendChild($descripcion_periodo);
+                
+                // ---------------------------Obtener unidades didácticas para este periodo---------------------------
+                $consulta_unidad = "SELECT * FROM sigi_unidad_didactica WHERE id_semestre=".$periodo['id'];
+                $resultado_unidad = $conexion->query($consulta_unidad);
+                $et_unidades = $xml->createElement('unidades_didacticas');
+                
+                while ($unidad = mysqli_fetch_assoc($resultado_unidad)) {
+                    $unidad_element = $xml->createElement('unidad_'.$unidad['id']);
+                    
+                    // ---------------------------Añadir datos básicos de la unidad---------------------------
+                    $nombre_unidad = $xml->createElement('nombre', $unidad['nombre']);
+                    $unidad_element->appendChild($nombre_unidad);
+                    
+                    $creditos_teorico = $xml->createElement('creditos_teorico', $unidad['creditos_teorico']);
+                    $unidad_element->appendChild($creditos_teorico);
+                    
+                    $creditos_practico = $xml->createElement('creditos_practico', $unidad['creditos_practico']);
+                    $unidad_element->appendChild($creditos_practico);
+                    
+                    $tipo_unidad = $xml->createElement('tipo', $unidad['tipo']);
+                    $unidad_element->appendChild($tipo_unidad);
+                    
+                    $orden_unidad = $xml->createElement('orden', $unidad['orden']);
+                    $unidad_element->appendChild($orden_unidad);
+                    
+                    // ---------------------------Calcular horas semanales y semestrales---------------------------
+                    $horas_teoricas_semanal = $unidad['creditos_teorico'] * 1;
+                    $horas_practicas_semanal = $unidad['creditos_practico'] * 2;
+                    $horas_totales_semanal = $horas_teoricas_semanal + $horas_practicas_semanal;
+                    $horas_semestrales = $horas_totales_semanal * 16;
+                    
+                    // ---------------------------Crear elemento horas_semanales---------------------------
+                    $et_horas_semanales = $xml->createElement('horas_semanales');
+                    
+                    $horas_teoricas_semanal_elem = $xml->createElement('teoricas', $horas_teoricas_semanal);
+                    $et_horas_semanales->appendChild($horas_teoricas_semanal_elem);
+                    
+                    $horas_practicas_semanal_elem = $xml->createElement('practicas', $horas_practicas_semanal);
+                    $et_horas_semanales->appendChild($horas_practicas_semanal_elem);
+                    
+                    $horas_totales_semanal_elem = $xml->createElement('totales', $horas_totales_semanal);
+                    $et_horas_semanales->appendChild($horas_totales_semanal_elem);
+                    
+                    $unidad_element->appendChild($et_horas_semanales);
+                    
+                    // ---------------------------Crear elemento horas_semestrales---------------------------
+                    $et_horas_semestrales = $xml->createElement('horas_semestrales');
+                    
+                    $horas_semestrales_elem = $xml->createElement('totales', $horas_semestrales);
+                    $et_horas_semestrales->appendChild($horas_semestrales_elem);
+                    
+                    // ---------------------------Calcular horas teóricas y prácticas semestrales---------------------------
+                    $horas_teoricas_semestrales = $horas_teoricas_semanal * 16;
+                    $horas_practicas_semestrales = $horas_practicas_semanal * 16;
+                    
+                    $horas_teoricas_semestrales_elem = $xml->createElement('teoricas', $horas_teoricas_semestrales);
+                    $et_horas_semestrales->appendChild($horas_teoricas_semestrales_elem);
+                    
+                    $horas_practicas_semestrales_elem = $xml->createElement('practicas', $horas_practicas_semestrales);
+                    $et_horas_semestrales->appendChild($horas_practicas_semestrales_elem);
+                    
+                    $unidad_element->appendChild($et_horas_semestrales);
+                    
+                    $et_unidades->appendChild($unidad_element);
+                }
+                $periodo_element->appendChild($et_unidades);
+                $et_periodos->appendChild($periodo_element);
             }
-            // Crear elemento XML con el nombre validado y el valor escapado
-            // htmlspecialchars previene problemas con caracteres especiales XML
-            $item->appendChild($dom->createElement($elementName, htmlspecialchars($value)));
+            $modulo_element->appendChild($et_periodos);
+            $et_modulos->appendChild($modulo_element);
         }
+        $plan->appendChild($et_modulos);
+        $et_plan->appendChild($plan);
     }
+    $num_pe->appendChild($et_plan);
+    $et1->appendChild($num_pe);
 }
 
-// Sección especial para unidades didácticas (requiere cálculos adicionales)
-// Crear elemento 'unidades_didacticas' como hijo de 'instituto'
-$unidades = $dom->createElement('unidades_didacticas');
-$instituto->appendChild($unidades);
-
-// Consulta SQL especial que incluye cálculos de horas:
-// - horas_teoricas_semanal: créditos teóricos × 1 hora
-// - horas_practicas_semanal: créditos prácticos × 2 horas
-// - horas_totales_semanal: suma de horas teóricas y prácticas semanales
-// - horas_semestrales: horas totales semanales × 16 semanas
-$sql = "SELECT id, nombre, id_semestre, creditos_teorico, creditos_practico, tipo, orden,
-        (creditos_teorico * 1) as horas_teoricas_semanal,
-        (creditos_practico * 2) as horas_practicas_semanal,
-        ((creditos_teorico * 1) + (creditos_practico * 2)) as horas_totales_semanal,
-        (((creditos_teorico * 1) + (creditos_practico * 2)) * 16) as horas_semestrales
-        FROM sigi_unidad_didactica";
-
-// Ejecutar consulta de unidades didácticas
-$stmt = $pdo->query($sql);
-// Recorrer cada unidad didáctica
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    // Crear elemento 'unidad' para cada registro
-    $unidad = $dom->createElement('unidad');
-    $unidades->appendChild($unidad);
-    
-    // Elementos regulares (datos directos de la base de datos)
-    $camposRegulares = ['id', 'nombre', 'id_semestre', 'creditos_teorico', 'creditos_practico', 'tipo', 'orden'];
-    foreach ($camposRegulares as $campo) {
-        // Verificar que el campo exista en los resultados
-        if (isset($row[$campo])) {
-            // Añadir elemento con el nombre del campo y su valor
-            $unidad->appendChild($dom->createElement($campo, htmlspecialchars($row[$campo])));
-        }
-    }
-    
-    // Crear sección especial 'horas' para agrupar los cálculos
-    $horas = $dom->createElement('horas');
-    $unidad->appendChild($horas);
-    // Añadir cada tipo de horas calculadas como elementos hijos de 'horas'
-    $horas->appendChild($dom->createElement('teoricas_semanal', $row['horas_teoricas_semanal']));
-    $horas->appendChild($dom->createElement('practicas_semanal', $row['horas_practicas_semanal']));
-    $horas->appendChild($dom->createElement('totales_semanal', $row['horas_totales_semanal']));
-    $horas->appendChild($dom->createElement('semestrales', $row['horas_semestrales']));
-}
-
-// Guardar el documento XML completo en el archivo 'sigi.xml'
-$dom->save('sigi.xml');
-// Mostrar mensaje de confirmación
-echo "sigi.xml creado exitosamente";
+$archivo = "sigi.xml";
+$xml->save($archivo);
 ?>

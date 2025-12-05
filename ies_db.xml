@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<programas_estudio>
+  <pe_1>
+    <codigo>DPW</codigo>
+    <tipo>Modular</tipo>
+    <nombre>DISEÑO Y PROGRAMACIÓN WEB</nombre>
+    <planes_estudio>
+      <plan_1>
+        <nombre>2021</nombre>
+        <resolucion>RD. 095-8566</resolucion>
+        <fecha_registro>2025-08-11 08:58:16</fecha_registro>
+      </plan_1>
+    </planes_estudio>
+  </pe_1>
+  <pe_2>
+    <codigo>ET</codigo>
+    <tipo>Modular</tipo>
+    <nombre>ENFERMERÍA TÉCNICA</nombre>
+    <planes_estudio>
+      <plan_2>
+        <nombre>2021</nombre>
+        <resolucion>RD. 095-8566</resolucion>
+        <fecha_registro>2025-08-11 08:58:32</fecha_registro>
+      </plan_2>
+      <plan_6>
+        <nombre>2025</nombre>
+        <resolucion>--</resolucion>
+        <fecha_registro>2025-08-11 08:59:50</fecha_registro>
+      </plan_6>
+    </planes_estudio>
+  </pe_2>
+  <pe_3>
+    <codigo>IA</codigo>
+    <tipo>Modular</tipo>
+    <nombre>INDUSTRIAS ALIMENTARIAS</nombre>
+    <planes_estudio>
+      <plan_3>
+        <nombre>2021</nombre>
+        <resolucion>RD. 095-8566</resolucion>
+        <fecha_registro>2025-08-11 08:58:48</fecha_registro>
+      </plan_3>
+    </planes_estudio>
+  </pe_3>
+  <pe_4>
+    <codigo>MA</codigo>
+    <tipo>Modular</tipo>
+    <nombre>MECATRONICA AUTOMOTRIZ</nombre>
+    <planes_estudio>
+      <plan_4>
+        <nombre>2021</nombre>
+        <resolucion>RD. 095-8566</resolucion>
+        <fecha_registro>2025-08-11 08:59:05</fecha_registro>
+      </plan_4>
+      <plan_8>
+        <nombre>2025</nombre>
+        <resolucion>--</resolucion>
+        <fecha_registro>2025-08-11 09:00:30</fecha_registro>
+      </plan_8>
+    </planes_estudio>
+  </pe_4>
+  <pe_5>
+    <codigo>PA</codigo>
+    <tipo>Modular</tipo>
+    <nombre>PRODUCCIÓN AGROPECUARIA</nombre>
+    <planes_estudio>
+      <plan_5>
+        <nombre>2021</nombre>
+        <resolucion>RD. 095-8566</resolucion>
+        <fecha_registro>2025-08-11 08:59:23</fecha_registro>
+      </plan_5>
+      <plan_9>
+        <nombre>2025</nombre>
+        <resolucion>--</resolucion>
+        <fecha_registro>2025-08-11 09:00:46</fecha_registro>
+      </plan_9>
+    </planes_estudio>
+  </pe_5>
+  <pe_6>
+    <codigo>IAB</codigo>
+    <tipo>Modular</tipo>
+    <nombre>INDUSTRIAS DE ALIMENTOS Y BEBIDAS</nombre>
+    <planes_estudio>
+      <plan_7>
+        <nombre>2025</nombre>
+        <resolucion>--</resolucion>
+        <fecha_registro>2025-08-11 09:00:09</fecha_registro>
+      </plan_7>
+    </planes_estudio>
+  </pe_6>
+</programas_estudio>
