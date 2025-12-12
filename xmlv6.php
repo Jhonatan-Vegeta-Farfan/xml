@@ -10,11 +10,9 @@ if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 
-// Crear base de datos si no existe (sin mostrar error si ya existe)
 $sql = "CREATE DATABASE IF NOT EXISTS $dbname";
 $conn->query($sql);
 
-// Seleccionar la base de datos
 $conn->select_db($dbname);
 
 // 2. Crear tabla de programas
@@ -65,52 +63,39 @@ $conn->query("CREATE TABLE IF NOT EXISTS sigi_unidad_didactica (
 
 
 $xml = simplexml_load_file('ies_db.xml') or die('Error no se cargo el xml');
+/*
+echo $xml->pe_1->nombre."<br>";
+echo $xml->pe_2->nombre;*/
 
 foreach ($xml as $i_pe => $pe) {
     echo 'codigo: ' . $pe->codigo . "<br>";
     echo 'tipo: ' . $pe->tipo . "<br>";
     echo 'nombre: ' . $pe->nombre . "<br>";
-    
-    // Insertar programa en BD
     $consulta = "INSERT INTO sigi_programa_estudios (codigo, tipo, nombre) 
                  VALUES ('$pe->codigo', '$pe->tipo', '$pe->nombre')";
     $conn->query($consulta);
     $id_programa = $conn->insert_id;
-    
-    // Recorrer planes
     foreach ($pe->planes_estudio[0] as $i_ple => $plan) {
         echo '--' . $plan->nombre . "<br>";
         echo '--' . $plan->resolucion . "<br>";
         echo '--' . $plan->fecha_registro . "<br>";
-        
-        // Insertar plan en BD
         $consulta = "INSERT INTO sigi_planes_estudio (id_programa, nombre, resolucion, fecha_registro, perfil_egresado) 
                      VALUES ($id_programa, '$plan->nombre', '$plan->resolucion', '$plan->fecha_registro', '$plan->perfil_egresado')";
         $conn->query($consulta);
         $id_plan = $conn->insert_id;
-        
-        // Recorrer módulos
         foreach ($plan->modulos_formativos[0] as $id_mod => $modulo) {
             echo '----' . $modulo->nro_modulo . "<br>";
             echo '----' . $modulo->descripcion . "<br>";
-            
-            // Insertar módulo en BD
             $consulta = "INSERT INTO sigi_modulo_formativo (descripcion, nro_modulo, id_plan) 
                          VALUES ('$modulo->descripcion', $modulo->nro_modulo, $id_plan)";
             $conn->query($consulta);
             $id_modulo = $conn->insert_id;
-            
-            // Recorrer semestres
             foreach ($modulo->periodos[0] as $i_per => $periodo) {
                 echo '------' . $periodo->descripcion . "<br>";
-                
-                // Insertar semestre en BD
                 $consulta = "INSERT INTO sigi_semestre (id_modulo, descripcion) 
                              VALUES ($id_modulo, '$periodo->descripcion')";
                 $conn->query($consulta);
                 $id_semestre = $conn->insert_id;
-                
-                // Recorrer unidades
                 $orden = 1;
                 foreach ($periodo->unidades_didacticas[0] as $id_ud => $ud) {
                     echo '--------' . $ud->nombre . "<br>";
@@ -119,8 +104,6 @@ foreach ($xml as $i_pe => $pe) {
                     echo '--------' . $ud->tipo . "<br>";
                     echo '--------' . $ud->horas_semanal . "<br>";
                     echo '--------' . $ud->horas_semestral . "<br>";
-                    
-                    // Insertar unidad en BD
                     $consulta = "INSERT INTO sigi_unidad_didactica (id_semestre, nombre, creditos_teorico, creditos_practico, tipo, horas_semanal, horas_semestral, orden) 
                                  VALUES ($id_semestre, '$ud->nombre', $ud->creditos_teorico, $ud->creditos_practico, '$ud->tipo', $ud->horas_semanal, $ud->horas_semestral, $orden)";
                     $conn->query($consulta);
@@ -130,8 +113,6 @@ foreach ($xml as $i_pe => $pe) {
             }
         }
     }
-    echo "<hr>";
 }
 
-echo "¡Base de datos creada y datos insertados correctamente!";
 ?>
