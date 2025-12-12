@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "root";
-$dbname = "xml2_db";
+$dbname = "xml20_db";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password);
